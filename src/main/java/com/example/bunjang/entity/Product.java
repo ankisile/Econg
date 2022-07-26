@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Product") //table 이름
-@ToString
+@ToString(exclude = "user")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -31,9 +31,8 @@ public class Product extends BaseEntity{
 
     private String sellStatus;
 
-    private String address;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 }
