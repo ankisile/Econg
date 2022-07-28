@@ -6,7 +6,6 @@ import com.example.bunjang.dto.TokenDTO;
 import com.example.bunjang.jwt.JwtFilter;
 import com.example.bunjang.jwt.TokenProvider;
 import com.example.bunjang.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +28,6 @@ public class UserController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Operation(summary = "register", description = "회원가입")
     @PostMapping(value="/register")
     public ResponseEntity<String> register(@RequestBody RegisterReqDTO registerReqDTO){
 

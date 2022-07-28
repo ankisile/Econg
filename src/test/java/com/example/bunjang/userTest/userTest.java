@@ -2,6 +2,7 @@ package com.example.bunjang.userTest;
 
 import com.example.bunjang.entity.User;
 import com.example.bunjang.repository.UserRepository;
+import com.example.bunjang.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,9 @@ public class userTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Test
     public void testUserEmail(){
         Optional<User> result = userRepository.findByEmail("abc@gmail.com");
@@ -22,5 +26,4 @@ public class userTest {
         System.out.println(result);
 
     }
-
 }

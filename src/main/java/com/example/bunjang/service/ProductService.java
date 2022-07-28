@@ -1,9 +1,6 @@
 package com.example.bunjang.service;
 
-import com.example.bunjang.dto.ProductDTO;
-import com.example.bunjang.dto.ProductDetailDTO;
-import com.example.bunjang.dto.ProductReqDTO;
-import com.example.bunjang.dto.RegisterReqDTO;
+import com.example.bunjang.dto.*;
 
 import java.util.List;
 
@@ -14,4 +11,6 @@ public interface ProductService {
     List<ProductDTO> getProducts();
 
     ProductDetailDTO getProductDetail(Long id);
+
+    String pushLikes(Long userId, Long productId);
 }

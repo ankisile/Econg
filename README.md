@@ -8,4 +8,7 @@
 - https://inf.run/8sE2
 - https://hyeonic.tistory.com/219
 - https://minholee93.tistory.com/entry/Spring-Security-JWT-Security-Spring-Boot-10
-- https://velog.io/@jeong-god/Spring-boot-Swagger-API-연동하기
+- https://kafcamus.tistory.com/43
+
+##### 오류
+- https://goyunji.tistory.com/137

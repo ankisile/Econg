@@ -8,6 +8,7 @@ public interface UserService {
 
     void register(RegisterReqDTO registerReqDTO);
     UserResDTO findUserInfo();
+    Long findUserId();
 //    void login(String email);
 
 }

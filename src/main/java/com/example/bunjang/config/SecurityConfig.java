@@ -27,7 +27,19 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtSecurityConfig jwtSecurityConfig;
 
-
+    private static final String[] PERMIT_URL_ARRAY = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,6 +63,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // Http Servlet Request를 사용하는 요청에 대해 접근 권한 설정
                 .antMatchers("/app/login").permitAll() //  인증없이 접근 허용
                 .antMatchers("/app/register").permitAll()
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .anyRequest().authenticated() // 그외 나머지 요청은 모두 인증받아야 함
 
                 .and()

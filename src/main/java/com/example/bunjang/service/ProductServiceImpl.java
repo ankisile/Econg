@@ -1,11 +1,14 @@
 package com.example.bunjang.service;
 
+import com.example.bunjang.dto.LikeReqDTO;
 import com.example.bunjang.dto.ProductDTO;
 import com.example.bunjang.dto.ProductDetailDTO;
 import com.example.bunjang.dto.ProductReqDTO;
+import com.example.bunjang.entity.Favorites;
 import com.example.bunjang.entity.Product;
 import com.example.bunjang.entity.ProductImage;
 import com.example.bunjang.entity.User;
+import com.example.bunjang.repository.FavoritesRepository;
 import com.example.bunjang.repository.ProductImageRepository;
 import com.example.bunjang.repository.ProductRepository;
 import com.example.bunjang.repository.UserRepository;
@@ -27,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
+    private final FavoritesRepository favoritesRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -80,6 +84,27 @@ public class ProductServiceImpl implements ProductService {
 //            return new ProductDetailDTO(p.getTitle(),)
 //        })
 //        return null;
+    }
+
+    @Override
+    public String pushLikes(Long userId, Long productId) {
+        if(productRepository.findById(productId).isEmpty()){
+            throw new RuntimeException("존재하지 않는 상품입니다");
+        }
+        Optional<Favorites> result = favoritesRepository.findByUser_UserIdAndProduct_ProductId(userId, productId);
+
+        if(result.isPresent()){
+            favoritesRepository.delete(result.get());
+            return "찜 해제";
+        }
+        else{
+            User user = User.builder().userId(userId).build();
+            Product product = Product.builder().productId(productId).build();
+            Favorites favorites = Favorites.builder().user(user).product(product).build();
+            favoritesRepository.save(favorites);
+            return "찜 등록";
+        }
+
     }
 
 }
