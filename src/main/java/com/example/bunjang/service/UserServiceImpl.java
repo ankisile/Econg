@@ -3,9 +3,9 @@ package com.example.bunjang.service;
 //import com.example.bunjang.config.Salt;
 //import com.example.bunjang.config.SaltUtil;
 import com.example.bunjang.common.Role;
-import com.example.bunjang.dto.LoginDTO;
-import com.example.bunjang.dto.RegisterReqDTO;
-import com.example.bunjang.dto.UserResDTO;
+import com.example.bunjang.dto.*;
+import com.example.bunjang.entity.Product;
+import com.example.bunjang.entity.ProductImage;
 import com.example.bunjang.entity.User;
 import com.example.bunjang.exception.DuplicateMemberException;
 import com.example.bunjang.repository.UserRepository;
@@ -17,6 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -69,5 +73,31 @@ public class UserServiceImpl implements UserService{
 
         return userRepository.findByEmail(email).get().getUserId();
     }
+
+    @Override
+    public List<CompanyDTO> getCompanies() {
+
+        List<User> user = userRepository.findByRole(Role.ROLE_ADMIN);
+
+        return user.stream().map(arr -> {
+            return new CompanyDTO(arr.getUserName(), arr.getProfileUrl());
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public String[] getCompanyDetail(Long companyId) {
+
+        Optional<User> result = userRepository.findById(companyId);
+
+        if(result.isEmpty())
+            new RuntimeException("존재하지 않는 user 입니다. companyId=" + companyId);
+
+        User user = result.get();
+
+        return new String[]{user.getUserName(), user.getProfileUrl()};
+
+
+    }
+
 
 }

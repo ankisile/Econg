@@ -3,15 +3,16 @@ package com.example.bunjang.dto;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
+
 @Log4j2
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
-    private String title;
-    private String imgUrl;
+public class CompanyDetailDTO {
     private String companyName;
-    private int price;
+    private String imgUrl;
+    private List<ProductDTO> productList;
 }

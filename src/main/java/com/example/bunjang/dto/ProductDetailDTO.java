@@ -4,6 +4,7 @@ import com.example.bunjang.entity.ProductImage;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Log4j2
@@ -18,5 +19,7 @@ public class ProductDetailDTO {
     private int price;
     private String explanation;
     private String companyName;
-    private List<String> productImages;
+    private LocalDate deadline;
+//    private List<String> productImages;
+    private String imgUrl;
 }

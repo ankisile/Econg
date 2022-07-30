@@ -20,9 +20,9 @@ public class productImageTest {
 
     @Test
     public void insertProduct(){
-        Product product = Product.builder().productId(1L).build();
+        Product product = Product.builder().productId(5L).build();
         ProductImage productImage = ProductImage.builder()
-                .productImgUrl("Url....")
+                .productImgUrl("Url5....")
                 .represent(true)
                 .product(product)
                 .build();
@@ -32,9 +32,9 @@ public class productImageTest {
 
     @Test
     public void insertProduct2(){
-        Product product = Product.builder().productId(1L).build();
+        Product product = Product.builder().productId(2L).build();
         ProductImage productImage = ProductImage.builder()
-                .productImgUrl("Url....")
+                .productImgUrl("Url not represent....")
                 .represent(false)
                 .product(product)
                 .build();

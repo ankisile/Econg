@@ -1,5 +1,6 @@
 package com.example.bunjang.productTest;
 
+import com.example.bunjang.common.ProductType;
 import com.example.bunjang.entity.Product;
 import com.example.bunjang.entity.User;
 import com.example.bunjang.repository.ProductRepository;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,18 +21,40 @@ public class productTest {
 
     @Test
     public void insertProduct(){
+        User user = User.builder().userId(3L).build();
+
         Product product = Product.builder()
-                .title("사과")
+                .title("Eco3's Sell Product")
                 .category("온라인 쇼핑")
-                .explanation("사과입니다")
-                .price(20000)
+                .explanation("Eco Sell")
+                .price(30000)
+                .productType(ProductType.SELLPRODUCT)
+                .user(user)
                 .build();
 
         productRepository.save(product);
     }
+
+    @Test
+    public void insertCrowdProduct(){
+        User user = User.builder().userId(2L).build();
+
+        Product product = Product.builder()
+                .title("Eco2's Crowd Product")
+                .category("온라인 쇼핑")
+                .explanation("Eco2 Crowd")
+                .price(20000)
+                .deadline(LocalDate.of(2022,8,30))
+                .productType(ProductType.SELLPRODUCT)
+                .user(user)
+                .build();
+
+        productRepository.save(product);
+    }
+
     @Test
     public void getProductsWithImage(){
-        List<Object[]> result = productRepository.getProductsWithImage();
+        List<Object[]> result = productRepository.getCrowdProductsWithImage();
         System.out.println("======luull======");
         System.out.println(result);
         for(Object[] arr : result) {

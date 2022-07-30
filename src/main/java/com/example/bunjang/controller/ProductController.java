@@ -20,9 +20,20 @@ public class ProductController {
 
     private final ProductService productService;
     private final UserService userService;
+
     //Get products
-    @GetMapping()
-    public ResponseEntity<List<ProductDTO>> getProducts() {
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    @GetMapping("/crowd")
+    public ResponseEntity<List<ProductDTO>> getCrowdProducts(){
+     return ResponseEntity.ok(productService.getCrowdProducts());
+     }
+
+    @GetMapping("/only")
+    public ResponseEntity<List<ProductDTO>> getOnlyProducts(){
         return ResponseEntity.ok(productService.getProducts());
     }
 
@@ -31,10 +42,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductDetail(productId));
     }
 
-    @PostMapping("/likes")
-    public ResponseEntity<String> pushLikes(@RequestBody LikeReqDTO likeDTO){
+    @PostMapping("/likes/{productId}")
+    public ResponseEntity<String> pushLikes(@PathVariable Long productId){
         Long userId = userService.findUserId();
-        Long productId = likeDTO.getProductId();
         return ResponseEntity.ok(productService.pushLikes(userId, productId));
 
     }

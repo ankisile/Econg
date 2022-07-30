@@ -3,6 +3,7 @@ package com.example.bunjang.entity;
 //import com.example.bunjang.config.Salt;
 import com.example.bunjang.common.Role;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

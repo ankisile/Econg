@@ -48,13 +48,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public List<ProductDTO> getProducts() {
+    public List<ProductDTO> getAllProducts() {
 
-        List<Object[]> result = productRepository.getProductsWithImage();
-
+        List<Object[]> result = productRepository.getAllProductsWithImage();
 
         return result.stream().map(arr -> {
-            return new ProductDTO((String) arr[0],(String) arr[1]);
+            Product product = (Product) arr[0];
+            ProductImage productImage = (ProductImage) arr[1];
+            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public List<ProductDTO> getCrowdProducts() {
+
+        List<Object[]> result = productRepository.getCrowdProductsWithImage();
+
+        return result.stream().map(arr -> {
+            Product product = (Product) arr[0];
+            ProductImage productImage = (ProductImage) arr[1];
+            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public List<ProductDTO> getProducts() {
+        List<Object[]> result = productRepository.getProductsWithImage();
+
+        return result.stream().map(arr -> {
+            Product product = (Product) arr[0];
+            ProductImage productImage = (ProductImage) arr[1];
+            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
         }).collect(Collectors.toList());
     }
 
@@ -65,25 +91,30 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> result = productRepository.findById(id);
         if(result.isEmpty()){
             throw new RuntimeException("존재하지 않은 id 입니다.");
-
         }
         Product product = result.get();
 
-        List<ProductImage> imgResult =productImageRepository.findByProduct_ProductId(id);
-        List<String> str= imgResult.stream().map(arr -> {
-            return arr.getProductImgUrl();
+//        List<ProductImage> imgResult =productImageRepository.findByProduct_ProductId(id);
+//        List<String> str= imgResult.stream().map(arr -> {
+//            return arr.getProductImgUrl();
+//        }).collect(Collectors.toList());
+
+        ProductImage imgResult = productImageRepository.findByProduct_ProductIdAndAndRepresent(id, true);
+
+        return new ProductDetailDTO(product.getTitle(), product.getPrice(), product.getExplanation(), product.getUser().getUserName(),product.getDeadline(),imgResult.getProductImgUrl());
+
+    }
+
+    @Transactional
+    @Override
+    public List<ProductDTO> getCompanyProductsWithImage(Long id) {
+        List<Object[]> result = productRepository.getCompanyProductsWithImage(id);
+
+        return result.stream().map(arr -> {
+            Product product = (Product) arr[0];
+            ProductImage productImage = (ProductImage) arr[1];
+            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
         }).collect(Collectors.toList());
-
-        return new ProductDetailDTO(product.getTitle(), product.getPrice(), product.getExplanation(), product.getUser().getUserName(),str);
-
-//        List<Object[]> result = productRepository.getProductDetail(id);
-//
-//        return result.stream().map(arr->{
-//            Product p = (Product) arr[0];
-//
-//            return new ProductDetailDTO(p.getTitle(),)
-//        })
-//        return null;
     }
 
     @Override
