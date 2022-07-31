@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
+    private Long id;
     private String title;
     private String imgUrl;
     private String companyName;

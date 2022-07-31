@@ -17,7 +17,7 @@ public interface UserService {
 
     List<CompanyDTO> getCompanies();
 
-    String[] getCompanyDetail(Long companyId);
+    Object[] getCompanyDetail(Long companyId);
 
 
 }

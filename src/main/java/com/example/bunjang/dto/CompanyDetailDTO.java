@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyDetailDTO {
+    private Long companyId;
     private String companyName;
     private String imgUrl;
     private List<ProductDTO> productList;

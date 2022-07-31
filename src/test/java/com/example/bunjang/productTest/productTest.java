@@ -21,13 +21,13 @@ public class productTest {
 
     @Test
     public void insertProduct(){
-        User user = User.builder().userId(3L).build();
+        User user = User.builder().userId(5L).build();
 
         Product product = Product.builder()
-                .title("Eco3's Sell Product")
+                .title("에코팜의 수세미")
                 .category("온라인 쇼핑")
-                .explanation("Eco Sell")
-                .price(30000)
+                .explanation("Ecfarm Sell")
+                .price(3500)
                 .productType(ProductType.SELLPRODUCT)
                 .user(user)
                 .build();
@@ -35,48 +35,48 @@ public class productTest {
         productRepository.save(product);
     }
 
-    @Test
-    public void insertCrowdProduct(){
-        User user = User.builder().userId(2L).build();
-
-        Product product = Product.builder()
-                .title("Eco2's Crowd Product")
-                .category("온라인 쇼핑")
-                .explanation("Eco2 Crowd")
-                .price(20000)
-                .deadline(LocalDate.of(2022,8,30))
-                .productType(ProductType.SELLPRODUCT)
-                .user(user)
-                .build();
-
-        productRepository.save(product);
-    }
-
-    @Test
-    public void getProductsWithImage(){
-        List<Object[]> result = productRepository.getCrowdProductsWithImage();
-        System.out.println("======luull======");
-        System.out.println(result);
-        for(Object[] arr : result) {
-            System.out.println("======testttt======");
-            System.out.println(Arrays.toString(arr));
-        }
-    }
-
-    @Test
-    public void getProductDetail(){
-//        List<Object[]> result = productRepository.getProductDetail(1l);
-//        System.out.println("======luull======");
+//    @Test
+//    public void insertCrowdProduct(){
+//        User user = User.builder().userId(5L).build();
 //
+//        Product product = Product.builder()
+//                .title("EcoFarm's Crowd Product")
+//                .category("온라인 쇼핑")
+//                .explanation("Eco2 Crowd")
+//                .price(20000)
+//                .deadline(LocalDate.of(2022,8,24))
+//                .productType(ProductType.CROWD)
+//                .user(user)
+//                .build();
+//
+//        productRepository.save(product);
+//    }
+//
+//    @Test
+//    public void getProductsWithImage(){
+//        List<Object[]> result = productRepository.getCrowdProductsWithImage();
+//        System.out.println("======luull======");
+//        System.out.println(result);
 //        for(Object[] arr : result) {
 //            System.out.println("======testttt======");
 //            System.out.println(Arrays.toString(arr));
-//            Product p = (Product) arr[0];
-//            System.out.println(p.getTitle());
 //        }
-
-        Optional<Product> result = productRepository.findById(1L);
-
-        System.out.println(result);
-    }
+//    }
+//
+//    @Test
+//    public void getProductDetail(){
+////        List<Object[]> result = productRepository.getProductDetail(1l);
+////        System.out.println("======luull======");
+////
+////        for(Object[] arr : result) {
+////            System.out.println("======testttt======");
+////            System.out.println(Arrays.toString(arr));
+////            Product p = (Product) arr[0];
+////            System.out.println(p.getTitle());
+////        }
+//
+//        Optional<Product> result = productRepository.findById(1L);
+//
+//        System.out.println(result);
+//    }
 }

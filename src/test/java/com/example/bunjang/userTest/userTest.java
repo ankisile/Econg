@@ -23,32 +23,34 @@ public class userTest {
     @Test
     public void testInsertUser(){
         User user = User.builder()
-                .userName("에코2")
-                .email("eco2@gmail.com")
+                .userName("에코팜")
+                .email("ecofarm@gmail.com")
                 .password("eco1234!")
-                .phone("022465843")
+                .phone("0214635843")
                 .activated(true)
                 .role(Role.ROLE_ADMIN)
+                .point(0)
+                .profileUrl("gs://android-kotlin-firebase-debb2.appspot.com/images/bud.png")
                 .build();
 
         userRepository.save(user);
     }
 
-    @Test
-    public void testUserEmail(){
-        Optional<User> result = userRepository.findByEmail("abc@gmail.com");
-
-        System.out.println(result);
-
-    }
-
-    @Test
-    public void testAdmin(){
-        List<User> user = userRepository.findByRole(Role.ROLE_ADMIN);
-
-        for( User u : user){
-            System.out.println(u);
-        }
-
-    }
+//    @Test
+//    public void testUserEmail(){
+//        Optional<User> result = userRepository.findByEmail("abc@gmail.com");
+//
+//        System.out.println(result);
+//
+//    }
+//
+//    @Test
+//    public void testAdmin(){
+//        List<User> user = userRepository.findByRole(Role.ROLE_ADMIN);
+//
+//        for( User u : user){
+//            System.out.println(u);
+//        }
+//
+//    }
 }

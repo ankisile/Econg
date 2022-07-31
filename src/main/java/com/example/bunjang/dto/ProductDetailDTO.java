@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDetailDTO {
 
+    private Long id;
     private String title;
     private int price;
     private String explanation;

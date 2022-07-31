@@ -34,11 +34,11 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public ResponseEntity<CompanyDetailDTO> getCompanyDetail(@PathVariable Long companyId) {
 
-        String [] result = userService.getCompanyDetail(companyId);
+        Object [] result = userService.getCompanyDetail(companyId);
 
         List<ProductDTO> productList = productService.getCompanyProductsWithImage(companyId);
 
 
-        return ResponseEntity.ok(new CompanyDetailDTO(result[0], result[1], productList));
+        return ResponseEntity.ok(new CompanyDetailDTO((Long) result[0], (String) result[1], (String) result[2],productList));
     }
 }

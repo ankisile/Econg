@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
         return result.stream().map(arr -> {
             Product product = (Product) arr[0];
             ProductImage productImage = (ProductImage) arr[1];
-            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
+            return new ProductDTO(product.getProductId(),product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
         }).collect(Collectors.toList());
     }
 
@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
         return result.stream().map(arr -> {
             Product product = (Product) arr[0];
             ProductImage productImage = (ProductImage) arr[1];
-            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
+            return new ProductDTO(product.getProductId(), product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
         }).collect(Collectors.toList());
     }
 
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
         return result.stream().map(arr -> {
             Product product = (Product) arr[0];
             ProductImage productImage = (ProductImage) arr[1];
-            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
+            return new ProductDTO(product.getProductId(),product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
         }).collect(Collectors.toList());
     }
 
@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductImage imgResult = productImageRepository.findByProduct_ProductIdAndAndRepresent(id, true);
 
-        return new ProductDetailDTO(product.getTitle(), product.getPrice(), product.getExplanation(), product.getUser().getUserName(),product.getDeadline(),imgResult.getProductImgUrl());
+        return new ProductDetailDTO(product.getProductId(), product.getTitle(), product.getPrice(), product.getExplanation(), product.getUser().getUserName(),product.getDeadline(),imgResult.getProductImgUrl());
 
     }
 
@@ -113,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
         return result.stream().map(arr -> {
             Product product = (Product) arr[0];
             ProductImage productImage = (ProductImage) arr[1];
-            return new ProductDTO(product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
+            return new ProductDTO(product.getProductId(), product.getTitle(), productImage.getProductImgUrl(),product.getUser().getUserName(),  product.getPrice());
         }).collect(Collectors.toList());
     }
 

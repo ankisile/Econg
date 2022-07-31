@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService{
     public void register(RegisterReqDTO registerReqDTO) {
 
         if (userRepository.findByEmail(registerReqDTO.getEmail()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입된 유저입니다.");
+            throw new DuplicateMemberException("이미 가입된 유저입니다.");
         }
 
         log.info(registerReqDTO.getPassword());
@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService{
                 .point(0)
                 .activated(true)
                 .role(Role.ROLE_USER)
+                .profileUrl("gs://android-kotlin-firebase-debb2.appspot.com/images/bud.png")
                 .build();
 
         userRepository.save(user);
@@ -80,12 +81,12 @@ public class UserServiceImpl implements UserService{
         List<User> user = userRepository.findByRole(Role.ROLE_ADMIN);
 
         return user.stream().map(arr -> {
-            return new CompanyDTO(arr.getUserName(), arr.getProfileUrl());
+            return new CompanyDTO(arr.getUserId(),arr.getUserName(), arr.getProfileUrl());
         }).collect(Collectors.toList());
     }
 
     @Override
-    public String[] getCompanyDetail(Long companyId) {
+    public Object[] getCompanyDetail(Long companyId) {
 
         Optional<User> result = userRepository.findById(companyId);
 
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService{
 
         User user = result.get();
 
-        return new String[]{user.getUserName(), user.getProfileUrl()};
+        return new Object[]{user.getUserId(),user.getUserName(), user.getProfileUrl()};
 
 
     }
