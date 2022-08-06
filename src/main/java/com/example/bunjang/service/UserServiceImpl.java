@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void register(RegisterReqDTO registerReqDTO) {
 
-        if (userRepository.findByEmail(registerReqDTO.getEmail()).orElse(null) != null) {
+        if (userRepository.findByEmail(registerReqDTO.getEmail()) != null) {
             throw new DuplicateMemberException("이미 가입된 유저입니다.");
         }
 
