@@ -9,8 +9,10 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDTO {
-    private Long companyId;
-    private String companyName;
-    private String imgUrl;
+public class FollowDTO {
+    private Long userId;
+    private String userName;
+    private String profileUrl;
+    private boolean follow;
+
 }

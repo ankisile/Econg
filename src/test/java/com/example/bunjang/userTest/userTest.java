@@ -20,21 +20,21 @@ public class userTest {
     @Autowired
     private UserService userService;
 
-    @Test
-    public void testInsertUser(){
-        User user = User.builder()
-                .userName("에코팜")
-                .email("ecofarm@gmail.com")
-                .password("eco1234!")
-                .phone("0214635843")
-                .activated(true)
-                .role(Role.ROLE_ADMIN)
-                .point(0)
-                .profileUrl("gs://android-kotlin-firebase-debb2.appspot.com/images/bud.png")
-                .build();
-
-        userRepository.save(user);
-    }
+//    @Test
+//    public void testInsertUser(){
+//        User user = User.builder()
+//                .userName("에코팜")
+//                .email("ecofarm@gmail.com")
+//                .password("eco1234!")
+//                .phone("0214635843")
+//                .activated(true)
+//                .role(Role.ROLE_ADMIN)
+//                .point(0)
+//                .profileUrl("gs://android-kotlin-firebase-debb2.appspot.com/images/bud.png")
+//                .build();
+//
+//        userRepository.save(user);
+//    }
 
 //    @Test
 //    public void testUserEmail(){

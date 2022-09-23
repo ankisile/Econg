@@ -1,4 +1,6 @@
-package com.example.bunjang.exception;
+package com.example.bunjang.common.exception;
+
+import org.springframework.http.HttpStatus;
 
 public class DuplicateMemberException extends RuntimeException {
     public DuplicateMemberException() {
@@ -12,5 +14,9 @@ public class DuplicateMemberException extends RuntimeException {
     }
     public DuplicateMemberException(Throwable cause) {
         super(cause);
+    }
+
+    public HttpStatus getHttpStatus() {
+        return HttpStatus.BAD_REQUEST;
     }
 }

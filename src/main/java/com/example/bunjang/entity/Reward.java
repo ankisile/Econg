@@ -5,24 +5,31 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Favorites") //table 이름
-@ToString
+@ToString(exclude = "project")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Favorites extends BaseEntity{
+public class Reward extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String name;
+
+    private int price;
+
+    private int stock;
+
+    private int soldQuantity;
+
+    private String combination;
+
 
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
 
 }

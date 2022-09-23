@@ -17,6 +17,6 @@ public class RegisterReqDTO {
     private String phoneNumber;
 
     private String userName;
-
+    private String nickName;
 
 }

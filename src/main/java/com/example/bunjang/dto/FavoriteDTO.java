@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikeReqDTO {
-    private long productId;
+public class FavoriteDTO {
+    private Long projectId;
+
 }

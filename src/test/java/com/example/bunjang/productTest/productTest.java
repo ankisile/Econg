@@ -1,39 +1,41 @@
 package com.example.bunjang.productTest;
 
-import com.example.bunjang.common.ProductType;
-import com.example.bunjang.entity.Product;
+import com.example.bunjang.entity.Favorites;
+import com.example.bunjang.entity.Project;
 import com.example.bunjang.entity.User;
-import com.example.bunjang.repository.ProductRepository;
+import com.example.bunjang.repository.FavoritesRepository;
+import com.example.bunjang.repository.ProjectRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 public class productTest {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProjectRepository projectRepository;
 
-    @Test
-    public void insertProduct(){
-        User user = User.builder().userId(5L).build();
+    @Autowired
+    private FavoritesRepository favoritesRepository;
 
-        Product product = Product.builder()
-                .title("에코팜의 수세미")
-                .category("온라인 쇼핑")
-                .explanation("Ecfarm Sell")
-                .price(3500)
-                .productType(ProductType.SELLPRODUCT)
-                .user(user)
-                .build();
-
-        productRepository.save(product);
-    }
+//    @Test
+//    public void insertProduct(){
+//        User user = User.builder().userId(5L).build();
+//
+//        Product product = Product.builder()
+//                .title("에코팜의 수세미")
+//                .category("온라인 쇼핑")
+//                .explanation("Ecfarm Sell")
+//                .price(3500)
+//                .productType(ProductType.SELLPRODUCT)
+//                .user(user)
+//                .build();
+//
+//        productRepository.save(product);
+//    }
 
 //    @Test
 //    public void insertCrowdProduct(){
@@ -54,14 +56,28 @@ public class productTest {
 //
 //    @Test
 //    public void getProductsWithImage(){
-//        List<Object[]> result = productRepository.getCrowdProductsWithImage();
-//        System.out.println("======luull======");
-//        System.out.println(result);
-//        for(Object[] arr : result) {
+//        List<Project> projects = projectRepository.findByStatusOrderByIdDesc("ONGOING");
+//
+//        String title = null;
+//        for(Project project : projects) {
 //            System.out.println("======testttt======");
-//            System.out.println(Arrays.toString(arr));
+//            System.out.println(project.getTitle());
+//            title = project.getTitle();
+//
 //        }
+//
+//        Assertions.assertThat(title).isEqualTo("테스트");
 //    }
+
+    @Test
+    void testLikes(){
+
+
+        List<Favorites> str = favoritesRepository.findByUser_Id(2L);
+
+
+    }
+
 //
 //    @Test
 //    public void getProductDetail(){

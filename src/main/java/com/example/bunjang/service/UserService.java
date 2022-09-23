@@ -1,23 +1,27 @@
 package com.example.bunjang.service;
 
-import com.example.bunjang.dto.CompanyDTO;
-import com.example.bunjang.dto.CompanyDetailDTO;
-import com.example.bunjang.dto.RegisterReqDTO;
-import com.example.bunjang.dto.UserResDTO;
-import com.example.bunjang.entity.User;
+import com.example.bunjang.dto.*;
 
 import java.util.List;
 
 public interface UserService {
 
     void register(RegisterReqDTO registerReqDTO);
-    UserResDTO findUserInfo();
+//    void login(LoginDTO loginDTO);
+
     Long findUserId();
-//    void login(String email);
 
-    List<CompanyDTO> getCompanies();
+    List<RecentUserDTO> getRecentUsers();
 
-    Object[] getCompanyDetail(Long companyId);
+    UserDTO getProfile(Long userId);
+
+    void getPostProjects(Long userId);
+
+    void getDonateProjects(Long userId);
+
+
+//        올린 프로젝트 후원한 프로젝트 받아오기 -> 이건 api 따로 만들기
+
 
 
 }

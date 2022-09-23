@@ -27,31 +27,36 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
-    @Column(name = "userName", nullable = false, length = 10)
-    private String userName;
-
-    @Column(name = "email", nullable = false, length = 20)
+    @Column(name = "email", nullable = false, length = 30)
     private String email;
 
     @Column(nullable = false, length = 200)
     private String password;
 
-    @Column(name = "phone", nullable = false, length = 11)
+    @Column(name = "phone", nullable = false, length = 13)
     private String phone;
+
+    @Column(name = "name", nullable = false, length = 10)
+    private String name;
+
+    @Column(name = "nickName", nullable = false, length = 10)
+    private String nickName;
+
+    @Column(length = 200)
+    private String description;
 
     @Column(length = 200)
     private String profileUrl;
-
-    @Column(columnDefinition = "int default 0")
-    private Integer point;
 
     @Column(name = "activated")
     private boolean activated;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private Boolean authenticate;
 
     @Builder
     public User(String email, String password,  Role role) {
