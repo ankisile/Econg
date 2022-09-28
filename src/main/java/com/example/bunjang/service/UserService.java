@@ -17,7 +17,6 @@ public interface UserService {
 
     void getPostProjects(Long userId);
 
-    void getDonateProjects(Long userId);
 
 
 //        올린 프로젝트 후원한 프로젝트 받아오기 -> 이건 api 따로 만들기

@@ -32,4 +32,7 @@ public class Reward extends BaseEntity{
     private Project project;
 
 
+    public void changeSoldQuantity(){
+        this.soldQuantity = this.soldQuantity +1;
+    }
 }

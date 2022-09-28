@@ -1,15 +1,13 @@
 package com.example.bunjang.service;
 
-import com.example.bunjang.common.exception.IdNotFoundException;
 import com.example.bunjang.common.exception.UserNotDefinedException;
 import com.example.bunjang.dto.FollowDTO;
-import com.example.bunjang.entity.Favorites;
 import com.example.bunjang.entity.Following;
-import com.example.bunjang.entity.Project;
 import com.example.bunjang.entity.User;
 import com.example.bunjang.repository.FollowingRepository;
 import com.example.bunjang.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService{
 
     private final FollowingRepository followingRepository;
@@ -61,12 +59,16 @@ public class FollowServiceImpl implements FollowService{
     @Override
     public List<FollowDTO> getFollowers(Long userId) {
         List<Following> result = followingRepository.findByFollow_Id(userId);
+
         return result.stream().map(following -> {
+//            String follow = isFollow(userId, following.getUser().getId()) ? "true": "false";
+//            follow = following.getUser().getId() == myId ? "MyAccount" : follow;
+
             return new FollowDTO(
             following.getUser().getId(),
            following.getUser().getName(),
            following.getUser().getProfileUrl(),
-           isFollow(userId, following.getUser().getId())
+                    isFollow(userId, following.getUser().getId())
             );
         }).collect(Collectors.toList());
     }
@@ -76,13 +78,18 @@ public class FollowServiceImpl implements FollowService{
         List<Following> result = followingRepository.findByUser_Id(userId);
 
         return result.stream().map(following -> {
+//            String follow = isFollow(userId, following.getUser().getId()) ? "true": "false";
+//            follow = following.getUser().getId() == myId ? "MyAccount" : follow;
+
             return new FollowDTO(
-                    following.getFollow().getId(),
-                    following.getFollow().getName(),
-                    following.getFollow().getProfileUrl(),
+                    following.getUser().getId(),
+                    following.getUser().getName(),
+                    following.getUser().getProfileUrl(),
                     isFollow(userId, following.getUser().getId())
             );
         }).collect(Collectors.toList());
     }
+
+
 
 }

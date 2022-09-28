@@ -143,7 +143,6 @@ public class ProjectServiceImpl implements ProjectService {
                 project.getGoalAmount(),
                 project.getTotalAmount(),
                 project.getAchievedRate(),
-                project.getSupporter(),
                 project.getSummary(),
                 project.getThumbnail(),
                 project.getAuthenticate(),

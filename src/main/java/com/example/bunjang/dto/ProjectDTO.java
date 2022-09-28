@@ -29,8 +29,6 @@ public class ProjectDTO {
 
     private int achievedRate;
 
-    private int supporter;
-
     private String summary;
 
     private String thumbnail;

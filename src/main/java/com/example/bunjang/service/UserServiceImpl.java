@@ -127,11 +127,6 @@ public class UserServiceImpl implements UserService{
         List<Project> projectList = projectRepository.findByUser_Id(userId);
     }
 
-    @Override
-    public void getDonateProjects(Long userId) {
-
-    }
-
 
 
 

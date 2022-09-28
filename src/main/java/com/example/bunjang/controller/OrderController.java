@@ -1,9 +1,17 @@
 package com.example.bunjang.controller;
 
+import com.example.bunjang.common.kakaopay.ApproveResponse;
+import com.example.bunjang.common.response.Message;
+import com.example.bunjang.dto.GetOrderDTO;
+import com.example.bunjang.dto.OrderDTO;
+import com.example.bunjang.dto.PostOrderDTO;
+import com.example.bunjang.service.OrderService;
+import com.example.bunjang.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -11,10 +19,87 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/app/orders")
 public class OrderController {
 
-    //get order
-//    프로젝트 이름, 리워드 아이디 전달
-    //post order //db에 일단 저장
-    //post order complete  -> orders/payments/complete
-    //get order complete
+    private final OrderService orderService;
+    private final UserService userService;
 
+    @GetMapping("/pay")
+    public ResponseEntity getOrderPage(@RequestParam Long rewardId){
+
+        GetOrderDTO result = orderService.getOrderPage(rewardId);
+
+        Message message = Message.builder()
+                .result(result)
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/pay")
+    public ResponseEntity payKakaoPay(@RequestBody PostOrderDTO postOrderDTO) {
+
+        log.info("kakaoPay post............................................");
+
+        Long userId = userService.findUserId();
+
+        String result = orderService.payReady(userId, postOrderDTO);
+
+        Message message = Message.builder()
+                .result(result)
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+
+
+    // 결제승인요청
+    @GetMapping("/pay/completed")
+    public ResponseEntity payCompleted(@RequestParam("pg_token") String pgToken) {
+
+        // 카카오 결재 요청하기
+        ApproveResponse approveResponse = orderService.payApprove(pgToken);
+
+        orderService.saveOrder(approveResponse);
+
+
+        Message message = Message.builder()
+                .result("KakaoPay Completed")
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/pay/cancel")
+    public ResponseEntity payCanceled() {
+
+        Message message = Message.builder()
+                .result("KakaoPay Canceled")
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/pay/fail")
+    public ResponseEntity payFailed() {
+
+        Message message = Message.builder()
+                .result("KakaoPay Canceled")
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/detail/{orderId}")
+    public ResponseEntity getDetailOrder(@PathVariable Long orderId){
+
+        OrderDTO orderDTO = orderService.getOrderDetail(orderId);
+
+        Message message = Message.builder()
+                .result("KakaoPay Canceled")
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

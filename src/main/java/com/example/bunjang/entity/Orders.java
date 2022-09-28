@@ -17,11 +17,17 @@ public class Orders extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String orderName;
+
     private int donation;
 
     private String orderStatus;
 
     private String deliveryAddress;
+
+    private String paymentMethodType;
+
+    private String paymentTid;
 
     @ManyToOne
     @JoinColumn(name = "reward_id")
@@ -31,7 +37,4 @@ public class Orders extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "delivery_id")
-    private Delivery delivery;
 }

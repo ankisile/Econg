@@ -9,17 +9,14 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO {
+public class PostOrderDTO {
 
-    private String tid;
+    private Long rewardId;
 
-    private String orderName;
+    private String rewardName;
 
-    private String orderStatus;
+    private int price;
 
     private String deliveryAddress;
-
-    private String paymentMethodType;
-
 
 }

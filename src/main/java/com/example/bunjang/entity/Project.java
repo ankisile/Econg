@@ -34,8 +34,6 @@ public class Project extends BaseEntity{
 
     private int achievedRate;
 
-    private int supporter; //서포터수
-
     private String summary;
 
     private String content;
@@ -49,5 +47,13 @@ public class Project extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void changeTotalAmount(int price){
+        this.totalAmount = this.totalAmount+price;
+    }
+
+    public void changeAchievedRate(){
+        this.achievedRate = (int)((double) this.totalAmount / (double) this.goalAmount * 100);
+    }
 
 }
