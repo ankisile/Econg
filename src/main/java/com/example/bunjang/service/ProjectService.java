@@ -10,7 +10,7 @@ public interface ProjectService {
 
     List<GetProjectDTO> getProducts(String type);
 
-    ProjectDTO getProductDetail(Long id);
+    ProjectDTO getProductDetail(Long userId, Long id);
 
 
 

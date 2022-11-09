@@ -1,11 +1,13 @@
 package com.example.bunjang.service;
 
+import com.example.bunjang.common.exception.IdNotFoundException;
 import com.example.bunjang.common.exception.UserNotDefinedException;
 import com.example.bunjang.dto.FollowDTO;
 import com.example.bunjang.entity.Following;
 import com.example.bunjang.entity.User;
 import com.example.bunjang.repository.FollowingRepository;
 import com.example.bunjang.repository.UserRepository;
+import com.example.bunjang.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,15 +62,23 @@ public class FollowServiceImpl implements FollowService{
     public List<FollowDTO> getFollowers(Long userId) {
         List<Following> result = followingRepository.findByFollow_Id(userId);
 
+        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow(() ->
+                new IdNotFoundException("Security Context에 인증 정보가 없습니다."));
+
+        User user = userRepository.findByEmail(userEmail).orElseThrow(()->new UserNotDefinedException("유저가 없습니다."));
+
         return result.stream().map(following -> {
+            boolean myProfile = false;
+            if(following.getUser().getId() == user.getId()) myProfile = true;
 //            String follow = isFollow(userId, following.getUser().getId()) ? "true": "false";
 //            follow = following.getUser().getId() == myId ? "MyAccount" : follow;
 
             return new FollowDTO(
-            following.getUser().getId(),
-           following.getUser().getName(),
-           following.getUser().getProfileUrl(),
-                    isFollow(userId, following.getUser().getId())
+                    following.getUser().getId(),
+                    following.getUser().getNickName(),
+                    following.getUser().getProfileUrl(),
+                    isFollow(userId, following.getUser().getId()),
+                    myProfile
             );
         }).collect(Collectors.toList());
     }
@@ -77,15 +87,26 @@ public class FollowServiceImpl implements FollowService{
     public List<FollowDTO> getFollowings(Long userId) {
         List<Following> result = followingRepository.findByUser_Id(userId);
 
+        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow(() ->
+                new IdNotFoundException("Security Context에 인증 정보가 없습니다."));
+
+        User user = userRepository.findByEmail(userEmail).orElseThrow(()->new UserNotDefinedException("유저가 없습니다."));
+
+
         return result.stream().map(following -> {
 //            String follow = isFollow(userId, following.getUser().getId()) ? "true": "false";
 //            follow = following.getUser().getId() == myId ? "MyAccount" : follow;
 
+            boolean myProfile = false;
+            if(following.getFollow().getId() == user.getId()) myProfile = true;
+
             return new FollowDTO(
-                    following.getUser().getId(),
-                    following.getUser().getName(),
-                    following.getUser().getProfileUrl(),
-                    isFollow(userId, following.getUser().getId())
+                    following.getFollow().getId(),
+                    following.getFollow().getNickName(),
+                    following.getFollow().getProfileUrl(),
+                    isFollow(userId, following.getFollow().getId()),
+                    myProfile
+
             );
         }).collect(Collectors.toList());
     }

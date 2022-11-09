@@ -4,12 +4,10 @@ package com.example.bunjang.service;
 import com.example.bunjang.common.Role;
 import com.example.bunjang.common.exception.IdNotFoundException;
 import com.example.bunjang.dto.*;
-import com.example.bunjang.entity.Community;
-import com.example.bunjang.entity.Favorites;
+import com.example.bunjang.entity.Following;
 import com.example.bunjang.entity.Project;
 import com.example.bunjang.entity.User;
 import com.example.bunjang.common.exception.DuplicateMemberException;
-import com.example.bunjang.repository.CommunityRepository;
 import com.example.bunjang.repository.FollowingRepository;
 import com.example.bunjang.repository.ProjectRepository;
 import com.example.bunjang.repository.UserRepository;
@@ -17,7 +15,6 @@ import com.example.bunjang.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +37,6 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final FollowingRepository followingRepository;
     private final ProjectRepository projectRepository;
-    private final CommunityRepository communityRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -57,6 +53,10 @@ public class UserServiceImpl implements UserService{
             throw new DuplicateMemberException("이미 가입된 유저입니다.");
         }
 
+        if(userRepository.findByNickName(registerReqDTO.getNickName()).orElse(null)!=null){
+            throw new DuplicateMemberException("닉네임 중복입니다");
+        }
+
 //        log.info(registerReqDTO.getPassword());
         String encodePassword = passwordEncoder.encode(registerReqDTO.getPassword());
 
@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService{
                 .activated(true)
                 .role(Role.ROLE_USER)
                 .profileUrl("gs://econg-7e3f6.appspot.com/bud.png")
+                .authenticate(false)
                 .build();
 
         userRepository.save(user);
@@ -96,10 +97,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<RecentUserDTO> getRecentUsers() {
 
-        List<Project> result = projectRepository.findByStatusOrderByIdDesc("ONGOING");
-
-        List<RecentUserDTO> userDTOList = result.stream().map(project -> {
-            User user = project.getUser();
+//        List<Project> result = projectRepository.findByStatusOrderByIdDesc("ONGOING");
+        List<User> result = projectRepository.findUserOrderByProjectIdDesc();
+        List<RecentUserDTO> userDTOList = result.stream().map(user -> {
+//            User user = project.getUser();
             return new RecentUserDTO(user.getId(),user.getNickName(),user.getDescription(),user.getProfileUrl(),user.getAuthenticate());
         }).collect(Collectors.toList());
 
@@ -108,7 +109,8 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public UserDTO getProfile(Long userId) {
+    public UserDTO getProfile( Boolean myProfile, Long userId) {
+
         Optional<User> result = userRepository.findById(userId);
 
         User user = result.get();
@@ -116,18 +118,56 @@ public class UserServiceImpl implements UserService{
         Long followingNum = followingRepository.countFollowingsByUser_Id(userId);
         Long followerNum= followingRepository.countFollowingsByFollow_Id(userId);
 
-        return new UserDTO(user.getId(),user.getNickName(),user.getDescription(),user.getProfileUrl(),user.getAuthenticate(), followingNum, followerNum);
+        String userEmail = SecurityUtil.getCurrentEmail().orElseThrow(() ->
+                new IdNotFoundException("Security Context에 인증 정보가 없습니다."));
+        Optional<User> currentUser = userRepository.findByEmail(userEmail);
+
+        Optional<Following> following = followingRepository.findByUser_IdAndFollow_Id(currentUser.get().getId(), userId);
+        boolean isFollow = false;
+        if(following.isPresent()) isFollow=true;
+
+        return new UserDTO(user.getId(),user.getNickName(),user.getDescription(),user.getProfileUrl(),user.getAuthenticate(), followingNum, followerNum, myProfile, isFollow);
 
 
     }
 
+    @Transactional
     @Override
-    public void getPostProjects(Long userId) {
+    public List<GetProjectDTO> getPostProjects(Long userId) {
 
         List<Project> projectList = projectRepository.findByUser_Id(userId);
+
+        return projectList.stream().map(project -> {
+                    return new GetProjectDTO(
+                            project.getId(),
+                            project.getTitle(),
+                            project.getOpeningDate(),
+                            project.getClosingDate(),
+                            project.getTotalAmount(),
+                            project.getAchievedRate(),
+                            project.getSummary(),
+                            project.getThumbnail(),
+                            project.getAuthenticate(),
+                            project.getStatus(),
+                            project.getUser().getNickName());
+                }
+        ).collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public String patchProfile(Long userId, PatchProfileDTO patchProfileDTO) {
 
+        User user = userRepository.findById(userId).orElseThrow(()->new IdNotFoundException("id not found"));
+
+        user.modifyNickName(patchProfileDTO.getNickName());
+        user.modifyDescription(patchProfileDTO.getDescription());
+        user.modifyProfileUrl(patchProfileDTO.getProfileUrl());
+
+        userRepository.save(user);
+
+        return "modify success";
+    }
 
 
 }

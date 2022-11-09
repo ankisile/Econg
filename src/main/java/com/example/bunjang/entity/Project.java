@@ -53,7 +53,8 @@ public class Project extends BaseEntity{
     }
 
     public void changeAchievedRate(){
-        this.achievedRate = (int)((double) this.totalAmount / (double) this.goalAmount * 100);
+        System.out.println((double) this.totalAmount * 100 / (double) this.goalAmount );
+        this.achievedRate = (int) Math.ceil((double) this.totalAmount * 100 / (double) this.goalAmount );
     }
 
 }

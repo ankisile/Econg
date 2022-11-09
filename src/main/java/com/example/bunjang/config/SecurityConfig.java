@@ -63,6 +63,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // Http Servlet Request를 사용하는 요청에 대해 접근 권한 설정
                 .antMatchers("/app/login").permitAll() //  인증없이 접근 허용
                 .antMatchers("/app/register").permitAll()
+                .antMatchers("/app/orders/pay/completed").permitAll()
+                .antMatchers("/app/orders/pay/fail").permitAll()
+                .antMatchers("/app/orders/pay/cancel").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .anyRequest().authenticated() // 그외 나머지 요청은 모두 인증받아야 함
 

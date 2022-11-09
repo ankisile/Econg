@@ -4,6 +4,7 @@ import com.example.bunjang.common.exception.IdNotFoundException;
 import com.example.bunjang.dto.*;
 import com.example.bunjang.entity.*;
 import com.example.bunjang.repository.*;
+import com.example.bunjang.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -76,13 +78,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 
         List<GetProjectDTO> list = result.stream().map(project -> {
-            Optional<Favorites> favorites = favoritesRepository.findByUser_IdAndProject_Id(project.getUser().getId(), project.getId());
-
-            Boolean heart = favorites.isEmpty()? false:true;
 
             LocalDate now = LocalDate.now();
 
-            int period = Period.between(now, project.getClosingDate()).getDays();
+            long period = ChronoUnit.DAYS.between(now, project.getClosingDate());
 //            System.out.println(period);
             if(type==null||(type.equals("almost")&&(0<=period&&period<=1)) || (type.equals("achieve")&&90<=project.getAchievedRate()&&project.getAchievedRate()<100) ){
                 return new GetProjectDTO(
@@ -95,18 +94,17 @@ public class ProjectServiceImpl implements ProjectService {
                         project.getSummary(),
                         project.getThumbnail(),
                         project.getAuthenticate(),
-                        heart,
+                        project.getStatus(),
                         project.getUser().getNickName());
             }
             return null;
         }).collect(Collectors.toList());
 
-        if(type==null) {
-        }
-      else{
+        while (list.remove(null)) {        }
+        if(type!=null) {
             Collections.shuffle(list);
-
         }
+
         return list;
     }
 
@@ -114,7 +112,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public ProjectDTO getProductDetail(Long id) {
+    public ProjectDTO getProductDetail(Long userId, Long id) {
+
 
         Optional<Project> result = projectRepository.findById(id);
         if(result.isEmpty()){
@@ -132,7 +131,7 @@ public class ProjectServiceImpl implements ProjectService {
             return new RewardDTO(arr.getId(), arr.getName(),arr.getPrice(),arr.getStock(),arr.getSoldQuantity(),arr.getCombination());
         }).collect(Collectors.toList());
 
-        Optional<Favorites> favorites = favoritesRepository.findByUser_IdAndProject_Id(project.getUser().getId(), project.getId());
+        Optional<Favorites> favorites = favoritesRepository.findByUser_IdAndProject_Id(userId, project.getId());
         Boolean heart = favorites.isEmpty()? false:true;
 
         return new ProjectDTO(
@@ -144,9 +143,11 @@ public class ProjectServiceImpl implements ProjectService {
                 project.getTotalAmount(),
                 project.getAchievedRate(),
                 project.getSummary(),
+                project.getContent(),
                 project.getThumbnail(),
                 project.getAuthenticate(),
                 heart,
+                project.getStatus(),
                 project.getUser().getId(),
                 project.getUser().getNickName(),
                 project.getUser().getAuthenticate(),

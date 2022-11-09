@@ -1,5 +1,6 @@
 package com.example.bunjang.controller;
 
+import com.example.bunjang.common.exception.IdNotFoundException;
 import com.example.bunjang.common.response.ExceptionResponse;
 import com.example.bunjang.common.response.Message;
 import com.example.bunjang.dto.*;
@@ -89,19 +90,47 @@ public class UserController {
 
     //프로필가져오기
 //    requestParam? or pathvariable
-    @GetMapping(value = {"/my-pages","/users/{userId}"})
+    @GetMapping(value = {"/profiles","/profiles/{userId}"})
     public ResponseEntity getUserProfile( @PathVariable(required = false) Long userId){
 
-        if(userId ==null) {
+        boolean myProfile = false;
+        if(userId ==null || userId == userService.findUserId()) {
             userId = userService.findUserId();
+            myProfile = true;
         }
 
-        UserDTO result = userService.getProfile(userId);
+        UserDTO result = userService.getProfile(myProfile, userId);
         Message message = Message.builder()
                 .result(result)
                 .build();
 
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PatchMapping("/profiles/modify/{userId}")
+    public ResponseEntity modifyUserProfile(@PathVariable Long userId, @RequestBody PatchProfileDTO patchProfileDTO){
+
+        String result = userService.patchProfile(userId, patchProfileDTO);
+
+        Message message = Message.builder()
+                .result(result)
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/users/post-projects/{userId}")
+    public ResponseEntity getPostProjects(@PathVariable Long userId){
+
+        List<GetProjectDTO> result = userService.getPostProjects(userId);
+
+        Message message = Message.builder()
+                .result(result)
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
     }
 
 
@@ -134,7 +163,14 @@ public class UserController {
     }
 
 
-
+    @ExceptionHandler(IdNotFoundException.class)
+    public ResponseEntity IdNotFoundException(Exception exception) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .build();
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 

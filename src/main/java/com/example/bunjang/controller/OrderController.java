@@ -1,8 +1,10 @@
 package com.example.bunjang.controller;
 
 import com.example.bunjang.common.kakaopay.ApproveResponse;
+import com.example.bunjang.common.kakaopay.ReadyResponse;
 import com.example.bunjang.common.response.Message;
 import com.example.bunjang.dto.GetOrderDTO;
+import com.example.bunjang.dto.GetProjectDTO;
 import com.example.bunjang.dto.OrderDTO;
 import com.example.bunjang.dto.PostOrderDTO;
 import com.example.bunjang.service.OrderService;
@@ -11,8 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+//@SessionAttributes({"tid","userId","postOrderDTO"})
 @RequiredArgsConstructor
 @RestController
 @Log4j2
@@ -21,6 +27,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final UserService userService;
+
 
     @GetMapping("/pay")
     public ResponseEntity getOrderPage(@RequestParam Long rewardId){
@@ -42,24 +49,42 @@ public class OrderController {
 
         Long userId = userService.findUserId();
 
-        String result = orderService.payReady(userId, postOrderDTO);
+        ReadyResponse readyResponse = orderService.payReady(userId, postOrderDTO);
+
+//        model.addAttribute("tid", readyResponse.getTid());
+//        log.info("결재고유 번호: " + readyResponse.getTid());
+//        model.addAttribute("userId", userId);
+//        model.addAttribute("postOrderDTO", postOrderDTO);
+
 
         Message message = Message.builder()
-                .result(result)
+                .result(readyResponse.getNext_redirect_app_url())
                 .build();
 
         return new ResponseEntity<>(message, HttpStatus.OK);
 
     }
 
+//    @ModelAttribute("tid") String tid,
+//                                       @ModelAttribute("userId") String userId,
+//                                       @ModelAttribute("postOrderDTO") PostOrderDTO postOrderDTO,
+//                                       Model model
 
     // 결제승인요청
     @GetMapping("/pay/completed")
-    public ResponseEntity payCompleted(@RequestParam("pg_token") String pgToken) {
+    public ResponseEntity payCompleted(@RequestParam("pg_token") String pgToken
+                                       ) {
 
+        log.info("결제 요청");
+        log.info(pgToken);
+//        log.info(tid);
+//        log.info(userId);
+//        log.info(postOrderDTO);
         // 카카오 결재 요청하기
+//        ApproveResponse approveResponse = orderService.payApprove(pgToken, tid, Long.parseLong(userId), postOrderDTO);
         ApproveResponse approveResponse = orderService.payApprove(pgToken);
 
+//        orderService.saveOrder(approveResponse, tid, Long.parseLong(userId), postOrderDTO);
         orderService.saveOrder(approveResponse);
 
 
@@ -97,9 +122,24 @@ public class OrderController {
         OrderDTO orderDTO = orderService.getOrderDetail(orderId);
 
         Message message = Message.builder()
-                .result("KakaoPay Canceled")
+                .result(orderDTO)
                 .build();
 
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @GetMapping("")
+    public ResponseEntity getOrderProjects(){
+
+        Long userId = userService.findUserId();
+
+        List<GetOrderDTO> result = orderService.getOrderProjects(userId);
+
+        Message message = Message.builder()
+                .result(result)
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }

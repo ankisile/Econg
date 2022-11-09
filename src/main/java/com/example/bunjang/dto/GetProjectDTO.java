@@ -32,7 +32,7 @@ public class GetProjectDTO {
 
     private boolean authenticate;
 
-    private boolean favorite;
+    private String status;
 
     private String user;
 }

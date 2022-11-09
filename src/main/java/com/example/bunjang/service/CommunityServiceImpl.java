@@ -1,9 +1,7 @@
 package com.example.bunjang.service;
 
-import com.example.bunjang.common.exception.CommentException;
 import com.example.bunjang.common.exception.IdNotFoundException;
 import com.example.bunjang.dto.CommunityDTO;
-import com.example.bunjang.dto.PostCommunityDTO;
 import com.example.bunjang.entity.Community;
 import com.example.bunjang.repository.CommunityRepository;
 import com.example.bunjang.util.SecurityUtil;
@@ -46,31 +44,5 @@ public class CommunityServiceImpl implements CommunityService{
         }).collect(Collectors.toList());
     }
 
-    @Transactional
-    @Override
-    public String deleteCommunity(Long communityId) {
 
-        Community community = communityRepository.findById(communityId).orElseThrow(() -> new CommentException("Comment Not Found"));
-
-        if(!community.getUser().getEmail().equals(SecurityUtil.getCurrentEmail())) {
-            throw new CommentException("Writer is not equal");
-        }
-
-        communityRepository.deleteById(communityId);
-        return "delete success";
-    }
-
-
-    @Transactional
-    @Override
-    public String modifyCommunity(Long communityId, PostCommunityDTO postCommunityDTO) {
-        Community community = communityRepository.findById(communityId).orElseThrow(() -> new CommentException("Comment Not Found"));
-
-        if(!community.getUser().getEmail().equals(SecurityUtil.getCurrentEmail())) {
-            throw new CommentException("Writer is not equal");
-        }
-
-        community.changeContent(postCommunityDTO.getContent());
-        return "modify success";
-    }
 }

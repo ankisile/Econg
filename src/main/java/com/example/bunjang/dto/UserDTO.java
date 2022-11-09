@@ -24,5 +24,8 @@ public class UserDTO {
 
     private Long followerNum;
 
+    private Boolean myProfile;
+
+    private Boolean isFollow;
 
 }

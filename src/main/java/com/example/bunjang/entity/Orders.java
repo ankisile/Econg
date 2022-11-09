@@ -30,6 +30,11 @@ public class Orders extends BaseEntity{
     private String paymentTid;
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+
+    @ManyToOne
     @JoinColumn(name = "reward_id")
     private Reward reward;
 

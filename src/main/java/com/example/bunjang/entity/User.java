@@ -3,17 +3,9 @@ package com.example.bunjang.entity;
 //import com.example.bunjang.config.Salt;
 import com.example.bunjang.common.Role;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Entity
 @Table(name = "User") //table 이름
@@ -57,6 +49,16 @@ public class User extends BaseEntity {
     private Role role;
 
     private Boolean authenticate;
+
+    public void modifyNickName(String nickName){
+        this.nickName = nickName;
+    }
+    public void modifyDescription(String description){
+        this.description = description;
+    }
+    public void modifyProfileUrl(String profileUrl){
+        this.profileUrl = profileUrl;
+    }
 
     @Builder
     public User(String email, String password,  Role role) {

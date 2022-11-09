@@ -6,6 +6,7 @@ import com.example.bunjang.common.kakaopay.ReadyResponse;
 import com.example.bunjang.dto.*;
 import com.example.bunjang.entity.*;
 import com.example.bunjang.repository.*;
+import com.example.bunjang.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,10 +39,13 @@ public class OrderServiceImpl implements OrderService {
 
     private final RewardRepository rewardRepository;
     private final OrdersRepository ordersRepository;
+    private final ProjectRepository projectRepository;
+
 
     private PostOrderDTO postOrderDTO;
     private Long userId;
     private ReadyResponse readyResponse;
+
 
 
     @Transactional
@@ -48,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String payReady(Long userId, PostOrderDTO postOrderDTO) {
+    public ReadyResponse payReady(Long userId, PostOrderDTO postOrderDTO) {
 
         this.postOrderDTO = postOrderDTO;
         this.userId = userId;
@@ -66,9 +75,9 @@ public class OrderServiceImpl implements OrderService {
         parameters.add("quantity", "1");
         parameters.add("total_amount", String.valueOf(postOrderDTO.getPrice()));
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "https://localhost:8080/app/orders/pay/completed"); // 결제승인시 넘어갈 url
-        parameters.add("cancel_url", "https://localhost:8080/app/orders/pay/cancel"); // 결제취소시 넘어갈 url
-        parameters.add("fail_url", "https://localhost:8080/app/orders/pay/fail"); // 결제 실패시 넘어갈 url
+        parameters.add("approval_url", "https://isileeserver.shop/app/orders/pay/completed"); // 결제승인시 넘어갈 url
+        parameters.add("cancel_url", "https://isileeserver.shop/app/orders/pay/cancel"); // 결제취소시 넘어갈 url
+        parameters.add("fail_url", "https://isileeserver.shop/app/orders/pay/fail"); // 결제 실패시 넘어갈 url
 
         log.info("파트너주문아이디:"+ parameters.get("partner_order_id")) ;
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -81,10 +90,11 @@ public class OrderServiceImpl implements OrderService {
             String url = "https://kapi.kakao.com/v1/payment/ready";
 
             // template으로 값을 보내고 받아온 ReadyResponse값 readyResponse에 저장.
+//            ReadyResponse readyResponse = template.postForObject(url, requestEntity, ReadyResponse.class);
             readyResponse = template.postForObject(url, requestEntity, ReadyResponse.class);
             log.info("결재준비 응답객체: " + readyResponse);
             // 받아온 값 return
-            return readyResponse.getNext_redirect_app_url();
+            return readyResponse;
         }catch (RestClientException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -93,6 +103,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+//    , String tid, Long userId, PostOrderDTO postOrderDTO
     // 결제 승인요청 메서드
     @Override
     public ApproveResponse payApprove(String pgToken) {
@@ -106,6 +117,7 @@ public class OrderServiceImpl implements OrderService {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
         parameters.add("cid", "TC0ONETIME");
         parameters.add("tid", readyResponse.getTid());
+//        parameters.add("tid", tid);
         parameters.add("partner_order_id", order_id); // 주문명
         parameters.add("partner_user_id", "Econg");
         parameters.add("pg_token", pgToken);
@@ -131,32 +143,42 @@ public class OrderServiceImpl implements OrderService {
         return approveResponse;
     }
 
+//    , String tid, Long userId, PostOrderDTO postOrderDTO
     @Transactional
     @Override
     public void saveOrder(ApproveResponse approveResponse) {
 
-        Reward reward = Reward.builder().id(postOrderDTO.getRewardId()).build();
+//        Reward reward = Reward.builder().id(postOrderDTO.getRewardId()).build();
         User user = User.builder().id(userId).build();
+//        Project project = Project.builder().id(postOrderDTO.getProjectId()).build();
 
-        Orders orders = Orders.builder()
+        Project project = projectRepository.findById(postOrderDTO.getProjectId()).orElseThrow(()->new IdNotFoundException("projectid is not found"));
+        Reward reward = rewardRepository.findById(postOrderDTO.getRewardId()).orElseThrow(()->new IdNotFoundException("rewardid is not found"));
+
+        log.info("order 저장");
+
+        Orders order = Orders.builder()
                 .orderName(approveResponse.getItem_name())
                 .donation(postOrderDTO.getPrice())
                 .orderStatus("PAYCOMPLETED")
                 .deliveryAddress(postOrderDTO.getDeliveryAddress())
                 .paymentMethodType(approveResponse.getPayment_method_type())
                 .paymentTid(approveResponse.getTid())
+                .project(project)
                 .reward(reward)
                 .user(user)
                 .build();
 
-        ordersRepository.save(orders);
+        ordersRepository.save(order);
 
-        reward = rewardRepository.findById(postOrderDTO.getRewardId()).orElseThrow(()->new IdNotFoundException("id is not found"));
-        Project project = reward.getProject();
+
 
         reward.changeSoldQuantity();
-        project.changeAchievedRate();
         project.changeTotalAmount(reward.getPrice());
+        project.changeAchievedRate();
+
+        rewardRepository.save(reward);
+        projectRepository.save(project);
 
     }
 
@@ -165,17 +187,42 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO getOrderDetail(Long orderId) {
         Orders orders = ordersRepository.findById(orderId).orElseThrow(()->new IdNotFoundException("id is not found"));
 
-        return new OrderDTO(orders.getPaymentTid(), orders.getOrderName(), orders.getOrderStatus(), orders.getDeliveryAddress(), orders.getPaymentMethodType());
+        return new OrderDTO(orders.getPaymentTid(),
+                orders.getProject().getId(),
+                orders.getProject().getTitle(),
+                orders.getOrderName(),
+                orders.getOrderStatus(),
+                orders.getDeliveryAddress(),
+                orders.getPaymentMethodType(),
+                orders.getDonation(),
+                orders.getReward().getName(),
+                orders.getReward().getCombination()
+                );
     }
 
-//    @Transactional
-//    @Override
-//    public GetProjectDTO getOrderProjects(Long userId) {
-//
-//        List<Orders> ordersList = ordersRepository.findByUser_Id(userId);
-//
-//        return new GetProjectDTO()
-//    }
+    @Transactional
+    @Override
+    public List<GetOrderDTO> getOrderProjects(Long userId) {
+
+
+        List<Orders> ordersList = ordersRepository.findByUser_Id(userId);
+
+       return  ordersList.stream().map(orders -> {
+                return new GetOrderDTO(
+                        orders.getProject().getId(),
+                        orders.getProject().getTitle(),
+                        orders.getProject().getThumbnail(),
+                        orders.getReward().getId(),
+                        orders.getReward().getName(),
+                        orders.getDonation(),
+                        orders.getReward().getCombination(),
+                        orders.getId(),
+                        orders.getProject().getStatus()
+                        );
+        }).collect(Collectors.toList());
+
+
+    }
 
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -186,5 +233,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> map = new HashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
 
 }

@@ -31,11 +31,15 @@ public class ProjectDTO {
 
     private String summary;
 
+    private String content;
+
     private String thumbnail;
 
     private boolean projectAuthenticate;
 
     private boolean favorite;
+
+    private String status;
 
     private Long userId;
 

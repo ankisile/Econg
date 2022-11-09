@@ -1,10 +1,30 @@
 package com.example.bunjang.productTest;
 
+import com.example.bunjang.entity.Project;
+import com.example.bunjang.repository.OrdersRepository;
+import com.example.bunjang.repository.ProjectRepository;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 public class productImageTest {
+
+    @Autowired
+    private OrdersRepository ordersRepository;
+
+    @Test
+    public void testRepository(){
+
+        List<Project> list = ordersRepository.findProjectsByUserId(5L);
+
+        for(Project p : list){
+            System.out.println(p.getTitle());
+        }
+
+    }
 
 
 //    @Test

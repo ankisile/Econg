@@ -14,5 +14,6 @@ public class FollowDTO {
     private String userName;
     private String profileUrl;
     private boolean follow;
+    private boolean myProfile;
 
 }

@@ -9,7 +9,10 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class PostOrderDTO {
+
+    private Long projectId;
 
     private Long rewardId;
 

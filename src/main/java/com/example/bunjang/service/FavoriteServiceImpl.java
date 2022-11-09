@@ -68,7 +68,7 @@ public class FavoriteServiceImpl implements FavoriteService {
                     project.getSummary(),
                     project.getThumbnail(),
                     project.getAuthenticate(),
-                    true,
+                    project.getStatus(),
                     project.getUser().getNickName());
 
         }).collect(Collectors.toList());

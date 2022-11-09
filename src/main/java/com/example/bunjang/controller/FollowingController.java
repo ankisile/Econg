@@ -4,7 +4,6 @@ import com.example.bunjang.common.exception.UserNotDefinedException;
 import com.example.bunjang.common.response.ExceptionResponse;
 import com.example.bunjang.common.response.Message;
 import com.example.bunjang.dto.FollowDTO;
-import com.example.bunjang.dto.GetProjectDTO;
 import com.example.bunjang.service.FollowService;
 import com.example.bunjang.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,7 +36,8 @@ public class FollowingController {
 
     @GetMapping(value = {"/followers","/users/{userId}/followers"})
     public ResponseEntity getFollowers(@PathVariable(required = false) Long userId){
-        if(userId ==null) {
+
+        if(userId ==null || userId == userService.findUserId()) {
             userId = userService.findUserId();
         }
         List<FollowDTO> followDTOList = followService.getFollowers(userId);
@@ -52,10 +51,12 @@ public class FollowingController {
 
     @GetMapping(value = {"/followings","/users/{userId}/followings"})
     public ResponseEntity getFollowings(@PathVariable(required = false) Long userId){
-        if(userId ==null) {
+
+        if(userId ==null || userId == userService.findUserId()) {
             userId = userService.findUserId();
         }
-        List<FollowDTO> followDTOList = followService.getFollowings(userId);
+
+        List<FollowDTO> followDTOList = followService.getFollowings( userId);
 
         Message message = Message.builder()
                 .result(followDTOList)

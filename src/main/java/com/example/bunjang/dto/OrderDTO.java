@@ -13,6 +13,10 @@ public class OrderDTO {
 
     private String tid;
 
+    private Long projectId;
+
+    private String projectName;
+
     private String orderName;
 
     private String orderStatus;
@@ -21,5 +25,9 @@ public class OrderDTO {
 
     private String paymentMethodType;
 
+    private int totalMoney;
 
+    private String rewardName;
+
+    private String combination;
 }

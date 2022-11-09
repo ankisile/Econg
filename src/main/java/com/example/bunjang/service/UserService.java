@@ -13,12 +13,11 @@ public interface UserService {
 
     List<RecentUserDTO> getRecentUsers();
 
-    UserDTO getProfile(Long userId);
+    UserDTO getProfile(Boolean myProfile, Long userId);
 
-    void getPostProjects(Long userId);
+    List<GetProjectDTO> getPostProjects(Long userId);
 
-
-
+    String patchProfile(Long userId, PatchProfileDTO patchProfileDTO);
 //        올린 프로젝트 후원한 프로젝트 받아오기 -> 이건 api 따로 만들기
 
 

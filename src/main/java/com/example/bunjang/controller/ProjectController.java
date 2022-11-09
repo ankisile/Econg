@@ -65,7 +65,9 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public ResponseEntity getProductDetail(@PathVariable Long projectId) {
 
-        ProjectDTO projectDTO = projectService.getProductDetail(projectId);
+        Long userId = userService.findUserId();
+
+        ProjectDTO projectDTO = projectService.getProductDetail(userId, projectId);
 
         Message message = Message.builder()
                 .result(projectDTO)

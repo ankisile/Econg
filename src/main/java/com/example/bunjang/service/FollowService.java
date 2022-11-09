@@ -11,9 +11,9 @@ public interface FollowService {
 
     boolean isFollow(Long userId,Long followId);
 
-    List<FollowDTO> getFollowers(Long userId);
+    List<FollowDTO> getFollowers( Long userId);
 
-    List<FollowDTO> getFollowings(Long userId);
+    List<FollowDTO> getFollowings( Long userId);
 
 
 
