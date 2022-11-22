@@ -11,7 +11,7 @@
 
 - 결제기능은 카카오 페이로 구현
 
-- [발표 자료] (https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
+- [발표 자료](https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
 
 ##### 참고문서
 - https://velog.io/@ehdrms2034/Spring-비밀번호-암호화에-대한-고찰
