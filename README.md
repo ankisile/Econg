@@ -13,7 +13,7 @@
 
 - [발표 자료](https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
      
-####ERD 설계
+#### ERD 설계
 ![에콩](https://user-images.githubusercontent.com/53250432/224109371-80203370-141c-4327-84fe-4d57a9fcbee2.png)
 
 
