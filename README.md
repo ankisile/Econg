@@ -2,49 +2,51 @@
 ![제목을 입력해주세요_-001](https://user-images.githubusercontent.com/53250432/235400210-86721d50-0423-4315-b4ae-386532caa3da.png)
 > 제 10회 K-해커톤 대회
 - [깃허브](https://github.com/ankisile/Econg)
-- [데모시연영상](https://drive.google.com/drive/u/0/folders/1ZoBWk5a9vi2lkO0rEy-bqNevLDovt3xZ)
+- [데모시연영상](https://drive.google.com/file/d/15sDyizRijrf6OM9K-Zg0xlXpAKks5Uak/view?usp=sharing)
 - [발표자료](https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
 - [명세서](https://docs.google.com/spreadsheets/d/1nZ5lGBsN1GYKoJO79iOhLn1kQwKNZGLz/edit?usp=sharing&ouid=100934178736454734095&rtpof=true&sd=true)
 
 ### Description
----
 ```
+Econg은 친환경 제품 제작자와 구매자가 원할하게 온라인 상에서 상품을 판매하고, 이용할 수 있게 도와주는 앱입니다.
 ```
 
 ### Project Goal
----
 ```
+
+1. 서비스 배경
+현대사회의 가장 큰 문제점은 환경과 관련된 것으로 개개인과 기업이 협력하여 지구환경 개선에 도움이 되고자 친환경 제품을 구입하여 사용하려는 경향이 높아지고 있다. 이러한 추세에 따라 각 가정과 기업이 연계하여 친환경 제품 소비를 확대할 필요가 있다.
+현재 친환경 제품 소비는 대기업 위주로만 진행된다는 문제점이 있으며, 친환경 제품의 종류가 무엇이 있는지 잘 모르고 검색에 불편함이 있다. 또한,  코로나로 인해 오프라인 구매가 위축되면서 다양한 방법으로 소비자들의 친환경 제품 소비 필요성이 대두되었다. 우리는 이러한 상황을 에콩 서비스로 해결할 수 있다고 생각한다.
+
+2. 서비스 소개
+우리의 서비스는 대기업에서 출시한 제품 외 친환경 제품들을 소비자가 쉽게 접근할 수 있도록 하는 서비스를 제공한다. 
+서비스 이용 시 친환경 제품과 친환경 제품 생산 기업 리스트를 한눈에 볼 수 있으며 기업을 팔로우함으로써 신제품 출시 알림을 받을 수 있게 한다. 구매하고 싶은 제품이 있다면 선택하여 크라우드 펀딩을 하여 구매할 수 있도록 한다. 또한, 온라인 커머스를 통해 중소기업에서 나온 제품들을 홍보할 수 있도록 한다. 이러한 기능과 더불어 실시간 인기 제품 랭킹 리스트를 제공한다.
+추후 서비스 배포 단계에서 구현에 필요한 제품을 이용하기 위해서 중소기업과 의논하여 얻어올 수 있도록 한다. 그리하여, 다양한 기업으로 이루어진 제품들을 이용하여 앱을 제작한다. 해커톤에서는 기술 구현을 중점으로 두었으므로 이는 상품화 후 진행할 예정이다.
+
+3. 서비스 장점, 영향
+해당 서비스는 사용자, 기업, 환경 시장에 긍정적인 영향을 끼칠 것이다.
+환경 보호를 위해 친환경 제품을  구매하여 사용하고자 하는 소비자들은 쉽게 다양한 친환경 제품 생산 기업에 접근할 수 있으며, 친환경 제품 기업은 이를 통해 이익을 얻을 수 있다. 또한, 대중들이 온라인 커머스를 통해 영상들을 다양하게 접할 수 있는 기회를 제공하여 제품과 기업을 적극적으로 홍보하는 효과까지 더불어 가져올 수 있다. 이는 대기업 중심의 수익 구조를 중소기업과 동등하게 제공할 수 있게 될 것이다.
+가정 내 친환경 소비가 커짐으로써 기타 대기업에서도 친환경 제품 개발을 위해 노력할 것이다. 이는 장기적으로 보았을 때 Eco Friendly 시장이 커지는데 영향을 끼치며, 환경 보호에 도움이 될 것이라 확신할 수 있다.
+
 ```
 
 - 친환경 제품 크라우드 펀딩 앱
-
 - 제로웨이스트 운동의 시장 가능성을 연결시킨 친환경 제품을 제공해주는 앱
-
 - 크라우드 펀딩: 구매하고 싶은 제품을 크라우드 펀딩을 이용하여 펀딩
-
 - 친환경 제품 및 크리에이터 리스트: 친환경 네품 및 크리에이터 리스트를 제공하여 사용자가 접근하기 용이하게 만듦
-
 - 결제기능은 카카오 페이로 구현
 
 ### Tech Stack
----
      
 #### ERD 설계
 ![에콩](https://user-images.githubusercontent.com/53250432/224109371-80203370-141c-4327-84fe-4d57a9fcbee2.png)
 
 ### Author
----
+- Android: 김나진  
+- Server: 송민영
 
 ### Award
----
+- 제 10회 K-해커톤 대회 장려상 수상
+![KakaoTalk_20230501_200516199](https://user-images.githubusercontent.com/53250432/235453244-7f89717d-ffa1-4400-a97f-e2732c93b570.jpg)
 
-##### 참고문서
-- https://velog.io/@ehdrms2034/Spring-비밀번호-암호화에-대한-고찰
-- https://mia-dahae.tistory.com/120
-- https://inf.run/8sE2
-- https://hyeonic.tistory.com/219
-- https://minholee93.tistory.com/entry/Spring-Security-JWT-Security-Spring-Boot-10
-- https://kafcamus.tistory.com/43
 
-##### 오류
-- https://goyunji.tistory.com/137
