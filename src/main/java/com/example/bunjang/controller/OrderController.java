@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@SessionAttributes({"tid","userId","postOrderDTO"})
 @RequiredArgsConstructor
 @RestController
 @Log4j2
@@ -51,12 +50,6 @@ public class OrderController {
 
         ReadyResponse readyResponse = orderService.payReady(userId, postOrderDTO);
 
-//        model.addAttribute("tid", readyResponse.getTid());
-//        log.info("결재고유 번호: " + readyResponse.getTid());
-//        model.addAttribute("userId", userId);
-//        model.addAttribute("postOrderDTO", postOrderDTO);
-
-
         Message message = Message.builder()
                 .result(readyResponse.getNext_redirect_app_url())
                 .build();
@@ -65,11 +58,6 @@ public class OrderController {
 
     }
 
-//    @ModelAttribute("tid") String tid,
-//                                       @ModelAttribute("userId") String userId,
-//                                       @ModelAttribute("postOrderDTO") PostOrderDTO postOrderDTO,
-//                                       Model model
-
     // 결제승인요청
     @GetMapping("/pay/completed")
     public ResponseEntity payCompleted(@RequestParam("pg_token") String pgToken
@@ -77,14 +65,10 @@ public class OrderController {
 
         log.info("결제 요청");
         log.info(pgToken);
-//        log.info(tid);
-//        log.info(userId);
-//        log.info(postOrderDTO);
+
         // 카카오 결재 요청하기
-//        ApproveResponse approveResponse = orderService.payApprove(pgToken, tid, Long.parseLong(userId), postOrderDTO);
         ApproveResponse approveResponse = orderService.payApprove(pgToken);
 
-//        orderService.saveOrder(approveResponse, tid, Long.parseLong(userId), postOrderDTO);
         orderService.saveOrder(approveResponse);
 
 
