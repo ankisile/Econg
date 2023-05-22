@@ -90,7 +90,6 @@ public class OrderServiceImpl implements OrderService {
             String url = "https://kapi.kakao.com/v1/payment/ready";
 
             // template으로 값을 보내고 받아온 ReadyResponse값 readyResponse에 저장.
-//            ReadyResponse readyResponse = template.postForObject(url, requestEntity, ReadyResponse.class);
             readyResponse = template.postForObject(url, requestEntity, ReadyResponse.class);
             log.info("결재준비 응답객체: " + readyResponse);
             // 받아온 값 return
@@ -103,7 +102,6 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-//    , String tid, Long userId, PostOrderDTO postOrderDTO
     // 결제 승인요청 메서드
     @Override
     public ApproveResponse payApprove(String pgToken) {
@@ -117,7 +115,6 @@ public class OrderServiceImpl implements OrderService {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
         parameters.add("cid", "TC0ONETIME");
         parameters.add("tid", readyResponse.getTid());
-//        parameters.add("tid", tid);
         parameters.add("partner_order_id", order_id); // 주문명
         parameters.add("partner_user_id", "Econg");
         parameters.add("pg_token", pgToken);
@@ -143,14 +140,11 @@ public class OrderServiceImpl implements OrderService {
         return approveResponse;
     }
 
-//    , String tid, Long userId, PostOrderDTO postOrderDTO
     @Transactional
     @Override
     public void saveOrder(ApproveResponse approveResponse) {
 
-//        Reward reward = Reward.builder().id(postOrderDTO.getRewardId()).build();
         User user = User.builder().id(userId).build();
-//        Project project = Project.builder().id(postOrderDTO.getProjectId()).build();
 
         Project project = projectRepository.findById(postOrderDTO.getProjectId()).orElseThrow(()->new IdNotFoundException("projectid is not found"));
         Reward reward = rewardRepository.findById(postOrderDTO.getRewardId()).orElseThrow(()->new IdNotFoundException("rewardid is not found"));
