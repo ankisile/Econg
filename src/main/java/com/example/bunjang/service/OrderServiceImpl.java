@@ -220,7 +220,7 @@ public class OrderServiceImpl implements OrderService {
 
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK f2a4d01f35979e50cbb0b443e03681f6"); //
+        headers.set("Authorization", "KakaoAK 키가 여기에 와야됨"); //
         headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         return headers;
