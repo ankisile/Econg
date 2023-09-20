@@ -17,6 +17,7 @@
 ```
 ### Tech Stack
 #### Tech Stack
+<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white">   <img src="https://img.shields.io/badge/JPA-007396?style=for-the-badge&logo=JPA&logoColor=white">  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow">  <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white">  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">   <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">   <img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=aws&logoColor=white">   <img src="https://img.shields.io/badge/kakao-FFCD00?style=for-the-badge&logo=KAKAO&logoColor=black">  
 
 #### ERD 설계
 ![에콩](https://user-images.githubusercontent.com/53250432/224109371-80203370-141c-4327-84fe-4d57a9fcbee2.png)
